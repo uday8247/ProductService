@@ -3,6 +3,8 @@ package com.shopping.products.controllers;
 import com.shopping.products.models.Product;
 import com.shopping.products.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,8 +22,12 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<Product> getAllProducts(){
-        return new ArrayList<>();
+    public ResponseEntity<List<Product>> getAllProducts(){
+
+        ResponseEntity<List<Product>> response = new ResponseEntity<>(
+                productService.getAllProducts(), HttpStatus.FORBIDDEN
+        );
+        return response;
     }
 
     @GetMapping("/{id}")
@@ -46,8 +52,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") Long id){
-
+    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
 
