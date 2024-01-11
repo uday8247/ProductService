@@ -1,11 +1,13 @@
 package com.shopping.products.controllers;
 
+import com.shopping.products.exceptions.ProductNotExistsException;
 import com.shopping.products.models.Product;
 import com.shopping.products.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +17,12 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    private ProductController(ProductService productService){
+    private ProductController(ProductService productService,RestTemplate restTemplate){
         this.productService=productService;
+        this.restTemplate=restTemplate;
     }
 
     @GetMapping()
@@ -31,14 +35,15 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id){
-        return productService.getSingleProduct(id);
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) throws ProductNotExistsException {
+        return new ResponseEntity<>(
+                productService.getSingleProduct(id),
+                HttpStatus.OK
+        );
     }
-    @PostMapping()
+    @PostMapping("/addProduct")
     public Product addNewproduct(@RequestBody Product product){
-        Product p=new Product();
-        p.setTitle("A new Product");
-        return p;
+        return productService.addNewProduct(product);
     }
 
     @PatchMapping("/{id}")
@@ -48,12 +53,13 @@ public class ProductController {
 
     @PutMapping("/{id}")
     public Product replaceProduct(@PathVariable("id") Long id,@RequestBody Product product){
-        return new Product();
+
+        return productService.replaceProduct(id,product);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public void deleteProduct(@PathVariable("id") Long id){
+        productService.deleteProduct(id);
     }
 }
 
