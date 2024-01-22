@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-@Service
+@Service("fakeStoreproductservice")
 public class FakeStoreProductService implements ProductService{
 
     private final RestTemplate restTemplate;

@@ -4,6 +4,7 @@ import com.shopping.products.exceptions.ProductNotExistsException;
 import com.shopping.products.models.Product;
 import com.shopping.products.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
     private final RestTemplate restTemplate;
 
     @Autowired
-    private ProductController(ProductService productService,RestTemplate restTemplate){
+    private ProductController(@Qualifier("selfproductservice") ProductService productService, RestTemplate restTemplate){
         this.productService=productService;
         this.restTemplate=restTemplate;
     }
