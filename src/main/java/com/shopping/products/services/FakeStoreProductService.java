@@ -109,6 +109,11 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
+    public Product updateProduct(Long id, Product product) {
+        return null;
+    }
+
+    @Override
     public Void deleteProduct(Long id) {
         map.remove(id);
         return null;
